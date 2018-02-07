@@ -1,0 +1,60 @@
+<div class="container">
+  <h3 class="title__main">Marvel Top Heroes</h3>
+  
+  <div class="search">
+    <input 
+      [(ngModel)]="searchQuery" 
+      (keyup)="search()" 
+      type="text" class="form-control" placeholder="Search...">
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Image</th>
+        <th>Hero Name</th>
+        <th>Bookmark</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hero of heroes">
+        <th scope="row">1</th>
+        <td>
+          <img src="{{hero.thumbnail.path + hero.thumbnail.extension}}">
+        </td>
+        <td>{{ hero.name }}</td>
+        <td>
+          <button *ngIf="!bookedHero; else heroBookmarked" (click)="saveBooking(hero.name)" class="btn btn-outline-primary btn-sm">Book Hero</button>
+        </td>
+      </tr>
+    </tbody>
+    
+    <!-- PAGINATION -->
+    <nav *ngIf="heroes" aria-label="...">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item active">
+          <a class="page-link" href="#">2
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </table>
+
+  <ng-template #heroBookmarked>
+    Hero is Bookmarked
+  </ng-template>
+</div>
