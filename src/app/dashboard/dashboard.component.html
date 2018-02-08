@@ -1,31 +1,37 @@
 <div class="container">
-  <h3 class="title__main">Marvel Top Heroes</h3>
+  <header>
+    <h3 class="title__main text-center">Marvel Top Heroes</h3>
+  </header>
   
+  <!-- SEARCH -->
   <div class="search">
     <input 
       [(ngModel)]="searchQuery" 
       (keyup)="search()" 
-      type="text" class="form-control" placeholder="Search...">
+      type="text" class="form-control" placeholder="Search for hero...">
   </div>
 
+  <!-- HEROES TABLE -->
   <table class="table">
     <thead>
       <tr>
         <th>Number</th>
-        <th>Image</th>
+        <th class="pl-5">Image</th>
         <th>Hero Name</th>
         <th>Bookmark</th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let hero of heroes">
-        <th scope="row">1</th>
+    <tbody text-center>
+      <tr *ngFor="let hero of heroes; let i = index">
+        <th scope="row">{{ i+1 }}</th>
         <td>
-          <img src="{{hero.thumbnail.path + hero.thumbnail.extension}}">
+          <img class="rounded-circle hero-img img-responsive" src="{{hero.thumbnail.path + '.' + hero.thumbnail.extension}}">
         </td>
-        <td>{{ hero.name }}</td>
+        <td >
+          <p class="mt-4">{{ hero.name }}</p>
+        </td>
         <td>
-          <button *ngIf="!bookedHero; else heroBookmarked" (click)="saveBooking(hero.name)" class="btn btn-outline-primary btn-sm">Book Hero</button>
+          <button *ngIf="!bookedHero; else heroBookmarked" (click)="saveBooking(hero)" class="btn btn-outline-primary btn-sm mt-4">Book Hero</button>
         </td>
       </tr>
     </tbody>

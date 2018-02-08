@@ -19,7 +19,7 @@ export class DashboardComponent implements OnDestroy {
 
   constructor(private heroService: HeroService) {
     this.heroes = new Array<Hero>();
-   }
+  }
 
   /**
    * Search for heroes
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnDestroy {
    * @param hero 
    * Saving the booked hero in the local storage
    */
-  saveBooking(hero: string) {
+  saveBooking(hero) {
     this.bookedHero = true;
     localStorage.setItem('myHero', hero);
   }  
