@@ -6,6 +6,7 @@
   <!-- SEARCH -->
   <div class="search">
     <input 
+      #query
       [(ngModel)]="searchQuery" 
       (keyup)="search()" 
       type="text" class="form-control" placeholder="Search for hero...">
@@ -14,7 +15,7 @@
   <!-- HEROES TABLE -->
   <table class="table">
     <thead>
-      <tr>
+      <tr *ngIf="!query.value">
         <th>Number</th>
         <th class="pl-5">Image</th>
         <th>Hero Name</th>
@@ -22,7 +23,7 @@
       </tr>
     </thead>
     <tbody text-center>
-      <tr *ngFor="let hero of heroes; let i = index">
+      <tr *ngFor="let hero of heroes; let i=index">
         <th scope="row">{{ i+1 }}</th>
         <td>
           <img class="rounded-circle hero-img img-responsive" src="{{hero.thumbnail.path + '.' + hero.thumbnail.extension}}">
@@ -31,10 +32,22 @@
           <p class="mt-4">{{ hero.name }}</p>
         </td>
         <td>
-          <button *ngIf="!bookedHero; else heroBookmarked" (click)="saveBooking(hero)" class="btn btn-outline-primary btn-sm mt-4">Book Hero</button>
+          <button *ngIf="!bookmarkedHero; else heroBookmarked" (click)="saveBooking(hero)" class="btn btn-outline-primary btn-sm mt-4">Book Hero</button>
         </td>
       </tr>
     </tbody>
+
+    <!-- HERO CARD SECTION -->
+    <section *ngIf="!query.value"  class="hero__card">
+      <div class="card text-center" style="width: 20rem;">
+        <img class="card-img-top" src="{{savedHero.thumbnail.path + '.' + savedHero.thumbnail.extension}}">
+        <div class="card-block text-center">
+          <h4 class="card-title mt-2">{{ savedHero.name }}</h4>
+          <p class="card-text pl-1 pr-1">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-outline-secondary text-center mb-2">Undo Hero</a>
+        </div>
+      </div>
+    </section>
     
     <!-- PAGINATION -->
     <nav *ngIf="heroes" aria-label="...">

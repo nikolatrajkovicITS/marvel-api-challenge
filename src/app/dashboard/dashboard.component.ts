@@ -3,8 +3,6 @@ import { HeroService } from '../shared/hero.service';
 import { Hero } from 'app/shared/hero.model';
 import { Observable } from 'rxjs';
 import { Subscription } from 'rxjs/Subscription';
-import {AccordionModule} from 'primeng/accordion';      
-import {MenuItem} from 'primeng/api'; 
 
 @Component({
   selector: 'app-dashboard',
@@ -13,9 +11,10 @@ import {MenuItem} from 'primeng/api';
 })
 export class DashboardComponent implements OnDestroy {
   heroes: Array<Hero>;
+  savedHero: Hero;
   searchQuery: string;
   subscription: Subscription;
-  bookedHero: boolean = false;
+  bookmarkedHero: boolean = false;
 
   constructor(private heroService: HeroService) {
     this.heroes = new Array<Hero>();
@@ -40,16 +39,17 @@ export class DashboardComponent implements OnDestroy {
    * @param hero 
    * Saving the booked hero in the local storage
    */
-  saveBooking(hero) {
-    this.bookedHero = true;
-    localStorage.setItem('myHero', hero);
+  saveBooking(hero: Hero) {
+    this.bookmarkedHero = true;
+    this.savedHero = hero;
+    localStorage.setItem('myHero', JSON.stringify(hero));
   }  
 
   /**
    * Retrieving the hero from local storage
    */
-  getBookedHero() {
-    localStorage.get('myHero');
+  getBookedHero(hero) {
+    this.savedHero = JSON.parse(localStorage.getItem(hero));
   }
 
   /**
