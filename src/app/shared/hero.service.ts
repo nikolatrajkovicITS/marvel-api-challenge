@@ -13,7 +13,7 @@ export class HeroService {
   constructor(private http: Http) { }
   
   getHeroes(searchedQuery: string) {
-    let url = `${environment.heroesUrl}limit=12&nameStartsWith=${searchedQuery}&ts=1&apikey=${this.publicKey}&hash=${this.hash}`;
+    let url = `${environment.heroesUrl}?limit=12&nameStartsWith=${searchedQuery}&ts=1&apikey=${this.publicKey}&hash=${this.hash}`;
     return this.http.get(url);
   }
 

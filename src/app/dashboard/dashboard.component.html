@@ -14,8 +14,8 @@
 
   <!-- HEROES TABLE -->
   <table class="table">
-    <thead>
-      <tr *ngIf="!query.value">
+    <thead *ngIf="!query.value">
+      <tr>
         <th>Number</th>
         <th class="pl-5">Image</th>
         <th>Hero Name</th>
@@ -32,22 +32,14 @@
           <p class="mt-4">{{ hero.name }}</p>
         </td>
         <td>
-          <button *ngIf="!bookmarkedHero; else heroBookmarked" (click)="saveBooking(hero)" class="btn btn-outline-primary btn-sm mt-4">Book Hero</button>
+          <button *ngIf="!hero.isBookmarked; else heroBookmarked" (click)="saveBooking(hero)" class="btn btn-outline-primary btn-sm mt-4">Book Hero</button>
         </td>
       </tr>
     </tbody>
 
-    <!-- HERO CARD SECTION -->
-    <section *ngIf="!query.value"  class="hero__card">
-      <div class="card text-center" style="width: 20rem;">
-        <img class="card-img-top" src="{{savedHero.thumbnail.path + '.' + savedHero.thumbnail.extension}}">
-        <div class="card-block text-center">
-          <h4 class="card-title mt-2">{{ savedHero.name }}</h4>
-          <p class="card-text pl-1 pr-1">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-outline-secondary text-center mb-2">Undo Hero</a>
-        </div>
-      </div>
-    </section>
+    <ng-template #heroBookmarked>
+      Hero is Bookmarked
+    </ng-template>
     
     <!-- PAGINATION -->
     <nav *ngIf="heroes" aria-label="...">
@@ -73,7 +65,18 @@
     </nav>
   </table>
 
-  <ng-template #heroBookmarked>
-    Hero is Bookmarked
-  </ng-template>
+   <!-- HERO CARD SECTION -->
+   <section class="hero__card" *ngIf="getBookedHeroes()">
+    <div class="card text-center" *ngFor="let getHero of getHeroes"  style="width: 20rem;">
+      <img 
+        class="card-img-top" 
+        src="{{getHero.thumbnail.path + '.' + getHero.thumbnail.extension}}">
+      <div class="card-block text-center">
+        <h4 class="card-title mt-2">{{ getHero.name }}</h4>
+        <p class="card-text pl-1 pr-1">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-outline-secondary text-center mb-2">Undo Hero</a>
+      </div>
+    </div>
+  </section>
+
 </div>

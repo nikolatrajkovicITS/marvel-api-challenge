@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  heroesUrl: "http://gateway.marvel.com/v1/public/characters?"
+  heroesUrl: "http://gateway.marvel.com/v1/public/characters"
 
  
 };

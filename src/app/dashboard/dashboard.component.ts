@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HeroService } from '../shared/hero.service';
 import { Hero } from 'app/shared/hero.model';
 import { Observable } from 'rxjs';
@@ -9,30 +9,41 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   heroes: Array<Hero>;
-  savedHero: Hero;
+  savedHero: Array<Hero>;
+  getHeroes: Array<Hero>;
   searchQuery: string;
   subscription: Subscription;
-  bookmarkedHero: boolean = false;
 
   constructor(private heroService: HeroService) {
     this.heroes = new Array<Hero>();
+    this.savedHero = new Array<Hero>();
+    this.getHeroes = new Array<Hero>();
+  }
+
+  ngOnInit() {
   }
 
   /**
    * Search for heroes
    */
   search() {
-    this.subscription = this.heroService.getHeroes(this.searchQuery)
-        .subscribe(response => {
-          let res = response.json();
-          this.heroes = res.data.results;
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    if(this.searchQuery) {
+      this.subscription = this.heroService.getHeroes(this.searchQuery)
+      .subscribe(response => {
+        let res = response.json();
+        this.heroes = res.data.results;
+    },
+    error => {
+      console.log(error);
+    }
+  );
+    }
+    else {
+      this.heroes = new Array<Hero>();
+    }
+    
   }
 
   /**
@@ -40,16 +51,22 @@ export class DashboardComponent implements OnDestroy {
    * Saving the booked hero in the local storage
    */
   saveBooking(hero: Hero) {
-    this.bookmarkedHero = true;
-    this.savedHero = hero;
-    localStorage.setItem('myHero', JSON.stringify(hero));
+    hero.isBookmarked = true;
+    this.savedHero.push(hero);
+    localStorage.setItem('myHeroes', JSON.stringify(this.savedHero));
   }  
 
   /**
    * Retrieving the hero from local storage
    */
-  getBookedHero(hero) {
-    this.savedHero = JSON.parse(localStorage.getItem(hero));
+  getBookedHeroes() {
+    if(!this.searchQuery) {
+      this.getHeroes = JSON.parse(localStorage.getItem('myHeroes'));
+      console.log('getBookedHeearoes method is executed ' + this.getHeroes);
+      return true;
+    } 
+    else 
+      console.log('Search input is not empty');
   }
 
   /**
